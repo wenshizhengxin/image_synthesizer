@@ -13,7 +13,7 @@
     },
     "autoload": {
         "psr-4": {
-            "lib\\": "lib/"
+            "wenshizhengxin\\image_synthesizer\\": "src/"
         }
     }
 }

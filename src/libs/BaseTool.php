@@ -1,5 +1,5 @@
 <?php
-namespace wenshizhengxin\image_synthesizer;
+namespace wenshizhengxin\image_synthesizer\libs;
 
 class BaseTool
 {

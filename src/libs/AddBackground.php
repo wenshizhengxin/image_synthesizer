@@ -4,7 +4,7 @@
  * Created at 2021/5/14 9:09 by Temple Chan
  */
 
-namespace wenshizhengxin\image_synthesizer;
+namespace wenshizhengxin\image_synthesizer\libs;
 
 
 class AddBackground extends BaseTool

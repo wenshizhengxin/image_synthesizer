@@ -4,7 +4,7 @@
  * Created at 2021/5/14 9:42 by 陈庙琴
  */
 
-namespace wenshizhengxin\image_synthesizer;
+namespace wenshizhengxin\image_synthesizer\libs;
 
 
 class Constant
