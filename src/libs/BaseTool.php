@@ -3,7 +3,7 @@ namespace wenshizhengxin\image_synthesizer\libs;
 
 class BaseTool
 {
-    public static $saveDir = null;
+    protected static $saveDir = null;
 
     public static function setSaveDirectory($directory)
     {

@@ -127,7 +127,7 @@ class AddBackground extends BaseTool
      * @return string|null
      * @throws \Exception
      */
-    public function make($format = Constant::EXTENSION_JPEG)
+    public function make($format = Constant::FORMAT_JPEG)
     {
         $res = $this->checkConfig();
         if ($res !== '') {
@@ -147,11 +147,10 @@ class AddBackground extends BaseTool
 
         imagecopyresized($bgCanvas, $canvas, $this->startPosition[0], $this->startPosition[1], 0, 0, $this->baseWidth, $baseHeight, imagesx($canvas), imagesy($canvas));
 
-
         if ($format === Constant::FORMAT_JPEG) {
-            imagejpeg($bgCanvas, $basename = rtrim(self::$saveDir, '/') . '/' . mt_rand(100, 999) . '.' . Constant::EXTENSION_JPEG);
+            imagejpeg($bgCanvas, $basename = rtrim(self::$saveDir, '/') . '/' . time() . mt_rand(100, 999) . '.' . Constant::EXTENSION_JPEG);
         } else if ($format === Constant::FORMAT_PNG) {
-            imagepng($bgCanvas, $basename = rtrim(self::$saveDir, '/') . '/' . mt_rand(100, 999) . '.' . Constant::EXTENSION_PNG);
+            imagepng($bgCanvas, $basename = rtrim(self::$saveDir, '/') . '/' . time() . mt_rand(100, 999) . '.' . Constant::EXTENSION_PNG);
         }
 
         return $basename ?? null;
