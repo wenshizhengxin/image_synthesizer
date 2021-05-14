@@ -1,0 +1,19 @@
+{
+    "name": "wenshizhengxin/image_synthesizer",
+    "description": "图片合成器",
+    "authors": [
+        {
+            "name": "Temple Chan",
+            "email": "1421224516@qq.com"
+        }
+    ],
+    "license": "MIT",
+    "require": {
+        "php": ">=7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "lib\\": "lib/"
+        }
+    }
+}
