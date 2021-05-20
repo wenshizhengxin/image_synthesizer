@@ -15,6 +15,7 @@ class AddBackground extends BaseTool
     protected $endPosition = [];
     protected $fixedAspectRatio = true; // 锁定纵横比
     protected $baseWidth = null;
+    protected $baseHeight = null;
 
     /**
      * 功能：添加背景图片路径
@@ -25,9 +26,9 @@ class AddBackground extends BaseTool
      */
     public function addBackgroundImage($path)
     {
-        if (is_file($path) === false) {
-            throw new \Exception('背景图片不存在');
-        }
+//        if (is_file($path) === false) {
+//            throw new \Exception('背景图片不存在');
+//        }
         $this->backgroundImagePath = $path;
         return $this;
     }
@@ -41,9 +42,9 @@ class AddBackground extends BaseTool
      */
     public function addImage($path)
     {
-        if (is_file($path) === false) {
-            throw new \Exception('图片不存在');
-        }
+//        if (is_file($path) === false) {
+//            throw new \Exception('图片不存在');
+//        }
         $this->imagePath = $path;
         return $this;
     }
@@ -108,12 +109,12 @@ class AddBackground extends BaseTool
         if (self::$saveDir === null) {
             return '图片保存路径未设置，请使用::setSaveDirectory()';
         }
-        if (is_file($this->imagePath) === false) {
-            return '主图片未找到，请使用->addImage()';
-        }
-        if (is_file($this->backgroundImagePath) === false) {
-            return '背景图片未找到，请使用->addBackgroundImage()';
-        }
+//        if (is_file($this->imagePath) === false) {
+//            return '主图片未找到，请使用->addImage()';
+//        }
+//        if (is_file($this->backgroundImagePath) === false) {
+//            return '背景图片未找到，请使用->addBackgroundImage()';
+//        }
         if (count($this->startPosition) !== 2) {
             return '起始位点未设置，请使用->setStartPosition()';
         }
@@ -141,11 +142,32 @@ class AddBackground extends BaseTool
         $bgCanvas = self::getCanvas($this->backgroundImagePath, $backgroundImageInfo['extension']);
         $canvas = self::getCanvas($this->imagePath, $imageInfo['extension']);
 
-        $baseHeight = $this->baseWidth / $imageInfo['aspect_rate'];
+        $this->baseWidth = $this->endPosition[0] - $this->startPosition[0];
+        $this->baseHeight = $this->endPosition[1] - $this->startPosition[1];
+
+        // 自动调整
+        $realWidth = $imageInfo['width'];
+        $realHeight = $imageInfo['height'];
+        if ($realWidth < $this->baseWidth && $realHeight < $this->baseHeight) { // 能框住，那原图就行
+        } else {
+            if ($imageInfo['aspect_rate'] < $backgroundImageInfo['aspect_rate']) { // 高度过分了，缩
+                $r = $realHeight / $this->baseHeight;
+                $realHeight = $this->baseHeight;
+                $realWidth = $realWidth / $r;
+            } else { // 宽度过分了，缩
+                $r = $realWidth / $this->baseWidth;
+                $realWidth = $this->baseWidth;
+                $realHeight = $realHeight / $r;
+            }
+        }
+
+        // 选开始位点
+        $startP[0] = $this->startPosition[0] + ($this->baseWidth - $realWidth) / 2;
+        $startP[1] = $this->startPosition[1] + ($this->baseHeight - $realHeight) / 2;
 //        var_dump($this->baseWidth);
 //        var_dump($baseHeight);
 
-        imagecopyresized($bgCanvas, $canvas, $this->startPosition[0], $this->startPosition[1], 0, 0, $this->baseWidth, $baseHeight, imagesx($canvas), imagesy($canvas));
+        imagecopyresized($bgCanvas, $canvas, $startP[0], $startP[1], 0, 0, $realWidth, $realHeight, imagesx($canvas), imagesy($canvas));
 
         if ($format === Constant::FORMAT_JPEG) {
             imagejpeg($bgCanvas, $basename = rtrim(self::$saveDir, '/') . '/' . time() . mt_rand(100, 999) . '.' . Constant::EXTENSION_JPEG);
