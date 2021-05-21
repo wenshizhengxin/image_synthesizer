@@ -4,6 +4,7 @@ namespace wenshizhengxin\image_synthesizer\libs;
 class BaseTool
 {
     protected static $saveDir = null;
+    protected $imagePath = null;
 
     public static function setSaveDirectory($directory)
     {
@@ -36,5 +37,23 @@ class BaseTool
         }
 
         return $canvas;
+    }
+
+    /**
+     * 功能：添加主图路径
+     * Created at 2021/5/14 9:18 by Temple Chan
+     * @param $path
+     * @return $this
+     * @throws \Exception
+     */
+    public function addImage($path)
+    {
+        $this->imagePath = $path;
+        return $this;
+    }
+
+    public function logIt($text)
+    {
+        file_put_contents('image_synthesizer.log', $text, FILE_APPEND);
     }
 }
