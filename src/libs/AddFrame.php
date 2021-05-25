@@ -27,6 +27,11 @@ class AddFrame extends BaseTool
         $this->{$direction . 'ImagePath'} = $path;
     }
 
+    public function setWidth($width)
+    {
+        $this->width = $width;
+    }
+
     public function setFillType($fillType)
     {
         $this->fillType = $fillType;
